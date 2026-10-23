@@ -418,6 +418,10 @@ export function piecewiseLive(
 /** The configured provider, or the first usable one: Apple on macOS, else OpenAI with a key. */
 export function chooseStt(config: VoiceConfig | undefined, stateDir: string, env = process.env): SttProvider {
 	const want = config?.stt ?? "auto";
+	// A local OpenAI-compatible recogniser (for example a whisper.cpp server run with
+	// --inference-path /audio/transcriptions) takes precedence when PI_SPEECH_STT_URL is set.
+	// The key is a placeholder most local servers ignore.
+	if (env.PI_SPEECH_STT_URL) return openaiProvider(env.PI_SPEECH_STT_KEY ?? "local", fetch, env.PI_SPEECH_STT_URL);
 	const key = env.OPENAI_API_KEY;
 	if (want === "openai" || (want === "auto" && process.platform !== "darwin")) {
 		if (!key) throw new Error("speech recognition needs OPENAI_API_KEY on this system (or macOS 26 for on-device recognition)");

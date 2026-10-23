@@ -43,6 +43,7 @@ It uses OpenAI's realtime model (`gpt-realtime-2`) over WebRTC with your ChatGPT
 
 - **macOS 26:** Apple's on-device SpeechAnalyzer. Free, private, live text while you talk. A small Swift helper compiles on first use (needs the Xcode command-line tools).
 - **Anywhere else:** set `OPENAI_API_KEY` for `gpt-4o-transcribe`.
+- **Local server:** set `PI_SPEECH_STT_URL` to an OpenAI-compatible base URL (for example a whisper.cpp server run with `--inference-path /audio/transcriptions`, at `http://127.0.0.1:8080`). It takes precedence over the two above; `PI_SPEECH_STT_KEY` overrides the placeholder key.
 - The microphone is captured with `ffmpeg`. `PI_SPEECH_MIC` picks a device (`PI_SPEECH_FFMPEG` points at ffmpeg if it isn't on `PATH`).
 
 The cleanup uses a fast model you already have in pi.

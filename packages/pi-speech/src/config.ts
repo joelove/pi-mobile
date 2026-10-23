@@ -7,7 +7,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 
 export interface VoiceConfig {
-	/** Speech recognition on this computer: Apple on-device (macOS 26+), OpenAI (OPENAI_API_KEY), or the first that works. */
+	/** Speech recognition on this computer: a local server via PI_SPEECH_STT_URL, Apple on-device (macOS 26+), OpenAI (OPENAI_API_KEY), or the first that works. */
 	stt?: "auto" | "apple" | "openai";
 	/** `provider/id` of the model that distils dictation and writes spoken briefs (default: a fast model you have). */
 	model?: string;
