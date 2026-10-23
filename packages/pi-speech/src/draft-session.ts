@@ -22,7 +22,7 @@ export interface DraftSessionOptions {
 	/** The workspace's names for this speech (see vocabularyPrompt). */
 	vocabulary?: (speech: string) => string;
 	send: (text: string, idle: boolean) => void;
-	/** alt+m while the view is open (the shortcut doesn't reach pi while the overlay has focus). */
+	/** alt+d while the view is open (the shortcut doesn't reach pi while the overlay has focus). */
 	onAltM: () => void;
 	/** Esc or Ctrl+C while a recording feeds the draft: stop it without losing what was said. */
 	onStopRecording: () => void;
@@ -91,7 +91,7 @@ export class DraftSession {
 						hints: this.o.hints,
 					});
 					this.offAltM = tui.addInputListener((data) => {
-						if (this.closed || !(matchesKey(data, "alt+m") || data === "µ")) return undefined;
+						if (this.closed || !(matchesKey(data, "alt+d"))) return undefined;
 						this.o.onAltM();
 						return { consume: true };
 					});

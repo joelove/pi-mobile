@@ -1,6 +1,6 @@
 // Terminal dictation that becomes a draft, end to end with fakes (no microphone, no recogniser, no
 // model): the recording forms the draft, a microphone failure keeps it, the check runs on the
-// session's model, alt+m changes it by voice, Enter sends it and deletes the transcript, Esc keeps
+// session's model, alt+d changes it by voice, Enter sends it and deletes the transcript, Esc keeps
 // it as text with the words not drafted yet. Plus the OpenAI recogniser's live pieces.
 
 import assert from "node:assert/strict";
@@ -165,7 +165,7 @@ function setup(opts: { fast?: Complete; check?: string } = {}) {
 		},
 		now: () => clock.t,
 	});
-	const altM = () => shortcuts["alt+m"].handler(ctx);
+	const altM = () => shortcuts["alt+d"].handler(ctx);
 	const screen = () => (view ? view.render(100).map((l) => stripTerminalSequences(l)).join("\n") : "");
 	const transcripts = () => (existsSync(join(dir, "drafts")) ? readdirSync(join(dir, "drafts")).map((f) => join(dir, "drafts", f)) : []);
 	const shutdown = () => Promise.all((handlers.session_shutdown ?? []).map((h) => h({}, ctx)));
@@ -181,7 +181,7 @@ function setup(opts: { fast?: Complete; check?: string } = {}) {
 	return { dir, clock, lives, mics, log, sent, ui, checks, altM, screen, transcripts, shutdown, formDraft, view: () => view! };
 }
 
-test("a microphone failure keeps the draft; the check runs on the session's model; alt+m changes it; Enter sends and deletes the transcript", async () => {
+test("a microphone failure keeps the draft; the check runs on the session's model; alt+d changes it; Enter sends and deletes the transcript", async () => {
 	const t = setup({ check: JSON.stringify({ edits: [{ op: "add", section: "Also mentioned", text: "The app is for field workers" }] }) });
 	try {
 		const live = await t.formDraft();
@@ -201,7 +201,7 @@ test("a microphone failure keeps the draft; the check runs on the session's mode
 		const [file] = t.transcripts();
 		assert.match(readFileSync(file!, "utf8"), /survive a restart of the app\.\nand log every retry\./);
 
-		// alt+m with the draft ready: a change by voice.
+		// alt+d with the draft ready: a change by voice.
 		await t.altM();
 		assert.equal(t.lives.length, 2);
 		t.lives[1]!.settle("drop the restart point");

@@ -53,7 +53,7 @@ test("dictation is registered once when both pi-mobile and pi-speech load, and a
 	registerDictation(a.pi);
 	registerDictation(b.pi);
 	assert.deepEqual(a.commands, ["dictate"]);
-	assert.deepEqual(a.shortcuts, ["alt+m"]);
+	assert.deepEqual(a.shortcuts, ["alt+d"]);
 	assert.deepEqual(b.commands, []);
 	assert.deepEqual(b.shortcuts, []);
 	// A reload shuts the old runtime down, then loads the extensions again.

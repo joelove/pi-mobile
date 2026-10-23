@@ -218,7 +218,7 @@ export class DraftView implements Component, Focusable {
 	handleInput(data: string): void {
 		this.lastKeyAt = this.now();
 		if (this.pasteBuf !== undefined || data.includes("\x1b[200~")) return this.pasteChunk(data);
-		if (matchesKey(data, "alt+m") || data === "µ") return this.opts.onAltM();
+		if (matchesKey(data, "alt+d")) return this.opts.onAltM();
 		if (matchesKey(data, "escape") || matchesKey(data, "ctrl+c")) return this.opts.onEscape();
 		if (matchesKey(data, "shift+enter") || matchesKey(data, "alt+enter")) return this.newLine();
 		if (matchesKey(data, "enter")) return this.opts.onEnter();
@@ -472,10 +472,10 @@ export class DraftView implements Component, Focusable {
 				? th.fg("dim", truncateToWidth(st.note, inner))
 				: "";
 		const hints: Record<ViewState, string> = {
-			listening: "Enter or alt+m finish · Esc keep as text · ↑↓ type · PgUp/PgDn scroll",
-			changing: "Enter or alt+m done · Esc keep as text",
+			listening: "Enter or alt+d finish · Esc keep as text · ↑↓ type · PgUp/PgDn scroll",
+			changing: "Enter or alt+d done · Esc keep as text",
 			checking: "Checking the draft against everything you said…  Esc keep as text",
-			ready: "Enter send · Esc keep as text · alt+m change it by voice · ↑↓ type · PgUp/PgDn scroll",
+			ready: "Enter send · Esc keep as text · alt+d change it by voice · ↑↓ type · PgUp/PgDn scroll",
 		};
 		const bottom = ["", hearing, "", th.fg("muted", this.opts.hints?.(st.state) ?? hints[st.state])];
 

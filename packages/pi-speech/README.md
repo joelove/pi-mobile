@@ -8,7 +8,7 @@ pi install npm:pi-speech
 
 ## Dictation
 
-Press **alt+m** (or `/dictate`), talk, then press **Enter**. Esc cancels.
+Press **alt+d** (or `/dictate`), talk, then press **Enter**. Esc cancels.
 
 What lands in the editor is the message you meant, not a transcript: corrections applied ("null, no wait, undefined" → `undefined`), fillers gone, several asks turned into a list, and spoken names matched to real ones in your repo ("get user by ID in off dot ts" → `getUserById` in `src/auth.ts`). Anything ambiguous is noted as *unclear* instead of guessed. You review it and send.
 
@@ -21,8 +21,8 @@ Keep talking. After about 30 seconds (sooner when you're describing something ra
 
 - It's updated at each pause: points are added, changed or moved, and what changed glows for a moment. When you correct yourself, the later version wins and the draft says so. Asides go under *Also mentioned*, ambiguities under *Open questions*. Nothing is added that you didn't say.
 - The shape follows what you say (a request, a spec, design notes, a task list, a bug report); say "make this a spec" to choose.
-- Pauses don't end it. **Enter** or **alt+m** finishes (the limit is 10 minutes; the status line warns a minute before). The draft is then checked once against everything you said, and corrections glow too.
-- Then refine it: **alt+m** to change it by voice ("drop the third point"), or type (↑↓ to move, only the line you're on shows its Markdown). **Enter** sends it to pi; **Esc** puts it in the editor.
+- Pauses don't end it. **Enter** or **alt+d** finishes (the limit is 10 minutes; the status line warns a minute before). The draft is then checked once against everything you said, and corrections glow too.
+- Then refine it: **alt+d** to change it by voice ("drop the third point"), or type (↑↓ to move, only the line you're on shows its Markdown). **Enter** sends it to pi; **Esc** puts it in the editor.
 - What you say is saved as you speak to `~/.pi/agent/pi-speech/drafts/`, deleted once the draft is sent or after 7 days. `/dictate raw` shows it.
 
 ## Voice mode

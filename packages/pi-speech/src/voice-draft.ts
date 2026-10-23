@@ -80,7 +80,7 @@ export class VoiceDraft implements DraftPort {
 			// Esc keeps the words heard but not drafted yet, below the draft.
 			pending: () => this.drafter.pending(),
 			send: (md) => d.send(md),
-			// Enter or alt+m while listening: finished, as "that's it".
+			// Enter or alt+d while listening: finished, as "that's it".
 			onAltM: () => (this.listening ? events.finish() : undefined),
 			onStopRecording: () => this.stopListening(),
 			onClose: (how) => {

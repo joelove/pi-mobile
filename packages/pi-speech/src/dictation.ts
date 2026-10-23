@@ -2,7 +2,7 @@
 // A long dictation (or one that describes rather than asks) becomes a draft instead: a structured
 // document that forms in a full-screen view while you talk (draft-session.ts, drafting.ts).
 //
-//   alt+m or /dictate      start listening; again (or Enter) to finish; Esc cancels
+//   alt+d or /dictate      start listening; again (or Enter) to finish; Esc cancels
 //   /dictate raw           the verbatim transcript of the last dictation (in the editor; for drafts, shown)
 //   /dictate undo          restore the editor to what it was before the last dictation
 //   /dictate send|review   after dictation, send right away or leave it in the editor (default)
@@ -79,7 +79,7 @@ interface Deps {
 	send: (text: string, idle: boolean) => void;
 	onEnd: (r: Recording) => void;
 	onResult: (l: Last) => void;
-	/** alt+m from the draft view. */
+	/** alt+d from the draft view. */
 	toggle: () => void;
 	onDraft: (s: DraftSession) => void;
 	onDraftClosed: (how: "sent" | "kept", markdown: string, said: string, s: DraftSession, r: Recording) => void;
@@ -179,10 +179,10 @@ export function registerDictation(pi: ExtensionAPI, complete?: Complete, ioOverr
 		await rec.start();
 	};
 
-	pi.registerShortcut("alt+m", { description: "Voice input: start or finish dictation", handler: toggle });
+	pi.registerShortcut("alt+d", { description: "Voice input: start or finish dictation", handler: toggle });
 
 	pi.registerCommand("dictate", {
-		description: "Voice input: dictate, get a clean prompt or a draft to review (alt+m). raw | undo | send | review | status",
+		description: "Voice input: dictate, get a clean prompt or a draft to review (alt+d). raw | undo | send | review | status",
 		getArgumentCompletions: (prefix) =>
 			["raw", "undo", "send", "review", "status"].filter((s) => s.startsWith(prefix.trim())).map((s) => ({ value: s, label: s })),
 		handler: async (args, c) => {
@@ -192,12 +192,12 @@ export function registerDictation(pi: ExtensionAPI, complete?: Complete, ioOverr
 			if (sub === "raw" && (!last || last.draft)) {
 				// A draft's transcript is long: show it without touching the editor (which may hold the draft).
 				const found = last ? { path: last.transcriptPath, text: (last.transcriptPath && readTranscript(last.transcriptPath)) || last.raw } : latestTranscript(draftsDir(io.dir()));
-				if (!found?.text) return c.ui.notify("No dictation yet. Press alt+m to start.", "info");
+				if (!found?.text) return c.ui.notify("No dictation yet. Press alt+d to start.", "info");
 				await c.ui.editor(`What you said${found.path ? ` (${found.path})` : ""}`, found.text);
 				return;
 			}
 			if (sub === "raw" || sub === "undo") {
-				if (!last) return c.ui.notify("No dictation yet. Press alt+m to start.", "info");
+				if (!last) return c.ui.notify("No dictation yet. Press alt+d to start.", "info");
 				c.ui.setEditorText(sub === "raw" ? (last.before ? `${last.before} ${last.raw}` : last.raw) : last.before);
 				return;
 			}
@@ -219,7 +219,7 @@ export function registerDictation(pi: ExtensionAPI, complete?: Complete, ioOverr
 					"info",
 				);
 			}
-			c.ui.notify("Usage: /dictate [raw|undo|send|review|status]  (alt+m starts and finishes dictation)", "info");
+			c.ui.notify("Usage: /dictate [raw|undo|send|review|status]  (alt+d starts and finishes dictation)", "info");
 		},
 	});
 }
@@ -280,7 +280,7 @@ class Recording {
 			this.session.setState("changing");
 		} else {
 			this.render();
-			// Keys while listening: Enter or alt+m finishes, Esc cancels; everything else is swallowed so a
+			// Keys while listening: Enter or alt+d finishes, Esc cancels; everything else is swallowed so a
 			// stray key doesn't edit the draft underneath. (Once the draft view is open, it takes the keys.)
 			this.unsubscribe = this.c.ui.onTerminalInput((data) => {
 				if (this.state === "done" || this.session) return undefined;
@@ -561,7 +561,7 @@ class Recording {
 			this.state === "starting"
 				? `${t.fg("dim", "○")} ${t.fg("dim", "Starting the microphone…  Esc cancels")}`
 				: this.state === "listening"
-					? `${t.fg("error", "●")} ${t.bold("Listening")} ${t.fg("dim", clock)}${warning ? ` ${t.fg("warning", warning)}` : ""} ${t.fg("accent", meter)}  ${t.fg("dim", "Enter/alt+m finish · Esc cancel")}`
+					? `${t.fg("error", "●")} ${t.bold("Listening")} ${t.fg("dim", clock)}${warning ? ` ${t.fg("warning", warning)}` : ""} ${t.fg("accent", meter)}  ${t.fg("dim", "Enter/alt+d finish · Esc cancel")}`
 					: `${t.fg("accent", "◌")} ${t.bold("Distilling")} ${t.fg("dim", "what you meant…  Esc cancels")}`;
 		const text = this.partial ? wrap(this.partial, 6).map((l) => t.fg("dim", l)) : [];
 		this.c.ui.setWidget(WIDGET, [head, ...text]);
